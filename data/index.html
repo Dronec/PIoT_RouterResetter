@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <title>Network monitor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="topnav">
+    <h1>Network monitor</h1>
+  </div>
+  <div class="content">
+    <div class="card-grid">
+      <div class="card">
+        <p class="card-title">Main router</p>
+        <label class="switch">
+          <input type="checkbox" onchange="toggleCheckbox(this)" id="relay1">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="card">
+        <p class="card-title">Upstairs router</p>
+        <label class="switch">
+          <input type="checkbox" onchange="toggleCheckbox(this)" id="relay2">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="card">
+        <p class="card-title">Last successful check</p>
+        <p class="state">
+        <h1 id="lastInternetTime"></h1>ago</p>
+      </div>
+      <div class="card">
+        <p class="card-title">Next check in</p>
+        <p class="state">
+        <h1 id="nextCheckIn"></h1></p>
+      </div>
+      <div class="card">
+        <p class="card-title">Device</p>
+        <p class="state">Wifi: <span id="ssid"></span></p>
+        <p class="state">Version: <span id="softwareVersion"></span></p>
+        <p class="state">Heap/Frag: <span id="ram"></span>/<span id="frag"></span></p>
+        <p class="state">Uptime, s: <span id="uptime"></span></p>
+        <p class="state">Consecutive fails: <span id="fails"></span></p>
+        <p class="state">Reboots: <span id="reboots"></span></p>
+      </div>
+      <div class="card">
+        <p class="card-title">Commands</p>
+        <button id="0" onClick="runCommand(this)">Reset device</button>
+        <button id="1" onClick="runCommand(this)">Add 15 min</button>
+        <button id="2" onClick="runCommand(this)">Check now</button>
+      </div>
+    </div>
+  </div>
+  <script src="/script.js"></script>
+</body>
+
+</html>

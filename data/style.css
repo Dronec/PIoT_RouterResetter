@@ -1,0 +1,113 @@
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+
+h1 {
+    font-size: 1.8rem;
+    color: dimgray;
+}
+
+.topnav {
+    overflow: hidden;
+    background-color: #0A1128;
+}
+
+body {
+    margin: 0;
+}
+
+.content {
+    padding: 50px;
+}
+
+.card-grid {
+    max-width: 600px;
+    margin: 0 auto;
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.card {
+    background-color: white;
+    box-shadow: 2px 2px 12px 1px rgba(140, 140, 140, .5);
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #034078
+}
+
+.state {
+    font-size: 1.2rem;
+    color: #1282A2;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 120px;
+    height: 68px
+}
+
+.switch input {
+    display: none
+}
+
+.slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 50px
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 52px;
+    width: 52px;
+    left: 8px;
+    bottom: 8px;
+    background-color: #fff;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50px;
+}
+
+input:checked+.slider {
+    background-color: #b30000;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(52px);
+    -ms-transform: translateX(52px);
+    transform: translateX(52px);
+}
+
+/* From cssbuttons.io by @adamgiebl */
+button {
+    color: #090909;
+    padding: 0.7em 1.7em;
+    font-size: 18px;
+    border-radius: 0.5em;
+    background: #e8e8e8;
+    border: 1px solid #e8e8e8;
+    transition: all .3s;
+    box-shadow: 6px 6px 12px #c5c5c5,
+        -6px -6px 12px #ffffff;
+    margin-bottom: 10px;
+}
+
+button:hover {
+    border: 1px solid white;
+}
+
+button:active {
+    box-shadow: 4px 4px 12px #c5c5c5,
+        -4px -4px 12px #ffffff;
+}
