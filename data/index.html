@@ -24,7 +24,7 @@
         </label>
       </div>
       <div class="card">
-        <p class="card-title">Upstairs router</p>
+        <p class="card-title">Wireless AP</p>
         <label class="switch">
           <input type="checkbox" onchange="toggleCheckbox(this)" id="relay2">
           <span class="slider"></span>
@@ -33,12 +33,22 @@
       <div class="card">
         <p class="card-title">Last successful check</p>
         <p class="state">
-        <h1 id="lastInternetTime"></h1>ago</p>
+        <h1 id="lastInternetTime"></h1></p>
       </div>
       <div class="card">
         <p class="card-title">Next check in</p>
         <p class="state">
         <h1 id="nextCheckIn"></h1></p>
+      </div>
+      <div class="card">
+        <p class="card-title">Last time connection lost</p>
+        <p class="state">
+        <h1 id="datetimeConnectionLost"></h1></p>
+      </div>
+      <div class="card">
+        <p class="card-title">Last time connection restored</p>
+        <p class="state">
+        <h1 id="datetimeConnectionRestored"></h1></p>
       </div>
       <div class="card">
         <p class="card-title">Device</p>

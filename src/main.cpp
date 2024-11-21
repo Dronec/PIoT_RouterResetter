@@ -12,7 +12,7 @@
 #define loopDelay 1000       // 5 seconds between loops
 #define checkIncrement 60000
 
-const char *softwareVersion = "1.20";
+const char *softwareVersion = "1.21";
 
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
@@ -36,6 +36,9 @@ unsigned long pp1offtime = 0;
 unsigned long pp2offtime = 0;
 unsigned long lastInternetTime;
 unsigned long timer;
+static String datetimeConnectionLost = "Never";
+static String datetimeConnectionRestored = "Never";
+static String datetime;
 
 HTTPClient http;
 WiFiClient client;
@@ -81,8 +84,10 @@ String getOutputStates()
   // sending stats
   myArray["stats"]["ssid"] = WiFi.SSID();
   myArray["stats"]["ip"] = WiFi.localIP().toString().c_str();
+  myArray["stats"]["datetimeConnectionLost"] = datetimeConnectionLost;
+  myArray["stats"]["datetimeConnectionRestored"] = datetimeConnectionRestored;
   myArray["stats"]["softwareVersion"] = softwareVersion;
-  myArray["stats"]["lastInternetTime"] = millisToTime((millis() - lastInternetTime - loopDelay));
+  myArray["stats"]["lastInternetTime"] = datetime;
   myArray["stats"]["nextCheckIn"] = millisToTime((timer - millis() + loopDelay));
   myArray["stats"]["fails"] = fails;
   myArray["stats"]["reboots"] = reboots;
@@ -136,13 +141,28 @@ void switchRelay(int relay, bool state)
     pp2Enabled = state;
   }
 }
-
+static void GetTime()
+{
+  Serial.printf("Getting date/time from Time Function...\n");
+  http.begin(client, "http://miniserverhome.local/datetime.php?timezone=Australia%2FSydney");
+  int httpCode = http.GET();
+  if (httpCode == HTTP_CODE_OK)
+  {
+    datetime = http.getString();
+    Serial.print(datetime);
+    Serial.println(datetime.c_str());
+  }
+  else
+  {
+    Serial.printf("Time Function failed, error: %d\n", httpCode);
+  }
+  http.end();
+}
 void CheckInternet()
 {
-
   http.begin(client, "http://www.msftncsi.com/ncsi.txt");
   int httpCode = http.GET();
-
+  http.end();
   // httpCode will be negative on error
   if (httpCode > 0)
   {
@@ -152,7 +172,12 @@ void CheckInternet()
     // file found at server
     if (httpCode == HTTP_CODE_OK)
     {
-      Serial.println(http.getString());
+      GetTime();
+      // Serial.println(http.getString());
+      if (fails > 0)
+      {
+        datetimeConnectionRestored = datetime;
+      }
       fails = 0;
       timer = millis() + checkIncrement;
       lastInternetTime = millis();
@@ -161,10 +186,13 @@ void CheckInternet()
   else
   {
     Serial.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
+    if (fails == 0)
+    {
+      datetimeConnectionLost = datetime;
+    }
     fails++;
     timer = millis() + checkIncrement * (fails + 2);
   }
-  http.end();
 }
 
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
