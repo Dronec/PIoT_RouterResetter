@@ -12,7 +12,7 @@
 #define loopDelay 1000       // 5 seconds between loops
 #define checkIncrement 60000
 
-const char *softwareVersion = "1.15";
+const char *softwareVersion = "1.20";
 
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
@@ -79,7 +79,8 @@ String getOutputStates()
 {
   JSONVar myArray;
   // sending stats
-  myArray["stats"]["ssid"] = WIFISSID_2;
+  myArray["stats"]["ssid"] = WiFi.SSID();
+  myArray["stats"]["ip"] = WiFi.localIP().toString().c_str();
   myArray["stats"]["softwareVersion"] = softwareVersion;
   myArray["stats"]["lastInternetTime"] = millisToTime((millis() - lastInternetTime - loopDelay));
   myArray["stats"]["nextCheckIn"] = millisToTime((timer - millis() + loopDelay));
@@ -249,7 +250,7 @@ void setup()
   timer = millis() + checkIncrement * 5;
 
   Serial.print("Setting STA configuration ... ");
-  WiFi.begin(WIFISSID_2, WIFIPASS_2);
+  WiFi.begin(WIFISSID_1, WIFIPASS_1);
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(1000);
@@ -282,11 +283,11 @@ void loop()
   {
     CheckInternet();
 
+    // if (fails == 5)
+    //   switchRelay(2, false);
     if (fails == 5)
-      switchRelay(2, false);
-    if (fails > 5)
       switchRelay(1, false);
-    if (fails > 6)
+    if (fails == 10)
       ESP.restart();
   }
 
