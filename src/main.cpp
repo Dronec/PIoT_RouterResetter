@@ -219,7 +219,7 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
         timer = timer + checkIncrement * 15;
         break;
       case 2:
-        CheckInternet();
+        timer = millis();
         break;
       }
     }
